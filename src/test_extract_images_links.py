@@ -23,7 +23,7 @@ class TestExtractImagesLinks(unittest.TestCase):
     def test_multiple_images(self):
 
         matches = extract_markdown_images("This is text with an ![image1](https://i.imgur.com/zjjcJKZ.png) and another ![image2](https://i.imgur.com/another.png)")
-
+        
         self.assertListEqual([("image1", "https://i.imgur.com/zjjcJKZ.png"), ("image2", "https://i.imgur.com/another.png")], matches)
 
     def test_multiple_links(self):
@@ -38,4 +38,10 @@ class TestExtractImagesLinks(unittest.TestCase):
         self.assertListEqual([], matches)
 
         matches = extract_markdown_links("This is text without links")
+        self.assertListEqual([], matches)
+
+    def test_invalid_markdown(self):
+        matches = extract_markdown_images("This is an invalid ![image without closing parenthesis")
+        self.assertListEqual([], matches)
+        matches = extract_markdown_links("This is an invalid [link without closing parenthesis")
         self.assertListEqual([], matches)

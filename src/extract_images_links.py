@@ -5,7 +5,6 @@ import re
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
 from text_to_html import text_node_to_html_node
-from splitnodes import split_nodes_delimiter
 
 def extract_markdown_images(text):
 
