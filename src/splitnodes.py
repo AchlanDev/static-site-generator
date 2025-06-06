@@ -83,9 +83,9 @@ def split_nodes_images(old_nodes):
             new_nodes.append(node)
             continue
 
-        extracted_links = extract_markdown_images(node.text)
+        extracted_images = extract_markdown_images(node.text)
 
-        if len(extracted_links) == 0:
+        if len(extracted_images) == 0:
             if '![' in node.text:
                 raise ValueError("invalid Markdown syntax")
             new_nodes.append(node)
@@ -94,9 +94,9 @@ def split_nodes_images(old_nodes):
         else:
             remaining_text = node.text
 
-            for extracted_link in extracted_links:
+            for extracted_image in extracted_images:
 
-                alt_text, url = extracted_link
+                alt_text, url = extracted_image
 
                 full_image_markdown = f"![{alt_text}]({url})"
 
@@ -123,8 +123,8 @@ def text_to_textnode(text):
 
     nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
 
-    nodes = split_nodes_links(nodes)
-
     nodes = split_nodes_images(nodes)
+
+    nodes = split_nodes_links(nodes)
 
     return nodes

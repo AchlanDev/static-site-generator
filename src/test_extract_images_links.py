@@ -1,6 +1,6 @@
 import unittest
 
-from extract_images_links import extract_markdown_images, extract_markdown_links
+from extract_images_links import extract_markdown_images, extract_markdown_links, extract_title
 from splitnodes import split_nodes_delimiter
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
@@ -45,3 +45,28 @@ class TestExtractImagesLinks(unittest.TestCase):
         self.assertListEqual([], matches)
         matches = extract_markdown_links("This is an invalid [link without closing parenthesis")
         self.assertListEqual([], matches)
+
+
+class TestExtractTitle(unittest.TestCase):
+
+    def test_extract_title(self):
+        markdown = "# This is a title\n\nThis is some content."
+        title = extract_title(markdown)
+        self.assertEqual(title, "This is a title")
+
+    def test_no_title(self):
+        markdown = "This is some content without a title."
+        with self.assertRaises(Exception) as context:
+            extract_title(markdown)
+        self.assertTrue("No title found." in str(context.exception))
+
+    def test_empty_markdown(self):
+        markdown = ""
+        with self.assertRaises(Exception) as context:
+            extract_title(markdown)
+        self.assertTrue("No title found." in str(context.exception))
+
+    def test_title_with_leading_spaces(self):
+        markdown = "   # This is a title with leading spaces\n\nThis is some content."
+        title = extract_title(markdown)
+        self.assertEqual(title, "This is a title with leading spaces")

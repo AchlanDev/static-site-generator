@@ -5,13 +5,25 @@
 import os
 import shutil
 from textnode import TextNode, TextType
+from generate_html import generate_page
 
 def main():
+
+    print("Copying static files to public directory...")
+
     result = static_to_public("static", "public")
 
-    for item in os.walk("static"):
-        for name in item[2]:
-            print(os.path.join(item[0], name))
+    print("Files copied successfully.")
+
+    # for item in os.walk("static"):
+    #     for name in item[2]:
+    #         print(os.path.join(item[0], name))
+
+    print("Starting static site generation...")
+
+    generate_page(from_path="content/index.md", template_path="template.html", dest_path="public/index.html")
+
+    print("Static site generated.")
 
     return result
 
