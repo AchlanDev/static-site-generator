@@ -5,7 +5,7 @@
 import os
 import shutil
 from textnode import TextNode, TextType
-from generate_html import generate_page
+from generate_html import generate_pages_recursive
 
 def main():
 
@@ -21,11 +21,13 @@ def main():
 
     print("Starting static site generation...")
 
-    generate_page(from_path="content/index.md", template_path="template.html", dest_path="public/index.html")
+    generate_pages_recursive(dir_path_content="content", template_path="template.html", dest_dir_path="public")
 
-    for item in os.walk("content"):
-        for name in item[2]:
-            generate_page(from_path=f"{item[0]}/{name}", template_path="template.html", dest_path=f"public/{item[0].removeprefix("content/")}/{name.replace('.md', '.html')}")
+    # generate_page(from_path="content/index.md", template_path="template.html", dest_path="public/index.html")
+
+    # for item in os.walk("content"):
+    #     for name in item[2]:
+    #         generate_page(from_path=f"{item[0]}/{name}", template_path="template.html", dest_path=f"public/{item[0].removeprefix("content/")}/{name.replace('.md', '.html')}")
 
     print("Static site generated.")
 
