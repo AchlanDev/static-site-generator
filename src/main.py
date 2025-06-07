@@ -4,34 +4,36 @@
 
 import os
 import shutil
+import sys
 from textnode import TextNode, TextType
 from generate_html import generate_pages_recursive
 
 def main():
 
-    print("Copying static files to public directory...")
+    basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
 
-    result = static_to_public("static", "public")
+    if not basepath == "/":
+        output_dir = "docs"
+    else:
+        output_dir = "public"
+
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+    os.makedirs(output_dir, exist_ok=True)
+
+    print(f"Copying static files to {output_dir}...")
+
+    static_to_public("static", output_dir)
 
     print("Files copied successfully.")
 
-    # for item in os.walk("static"):
-    #     for name in item[2]:
-    #         print(os.path.join(item[0], name))
-
     print("Starting static site generation...")
 
-    generate_pages_recursive(dir_path_content="content", template_path="template.html", dest_dir_path="public")
-
-    # generate_page(from_path="content/index.md", template_path="template.html", dest_path="public/index.html")
-
-    # for item in os.walk("content"):
-    #     for name in item[2]:
-    #         generate_page(from_path=f"{item[0]}/{name}", template_path="template.html", dest_path=f"public/{item[0].removeprefix("content/")}/{name.replace('.md', '.html')}")
+    generate_pages_recursive(basepath, dir_path_content="content", template_path="template.html", dest_dir_path=output_dir)
 
     print("Static site generated.")
 
-    return result
+    return True
 
 def static_to_public(static_dir, public_dir):
 
