@@ -10,7 +10,8 @@ from generate_html import generate_pages_recursive
 
 def main():
 
-    basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
+    split_args = sys.argv[1].split("/")
+    basepath = f"/{split_args[2]}" if len(sys.argv) > 1 else "/"
 
     if not basepath == "/":
         output_dir = "docs"
