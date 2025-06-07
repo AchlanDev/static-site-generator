@@ -23,6 +23,10 @@ def main():
 
     generate_page(from_path="content/index.md", template_path="template.html", dest_path="public/index.html")
 
+    for item in os.walk("content"):
+        for name in item[2]:
+            generate_page(from_path=f"{item[0]}/{name}", template_path="template.html", dest_path=f"public/{item[0].removeprefix("content/")}/{name.replace('.md', '.html')}")
+
     print("Static site generated.")
 
     return result
